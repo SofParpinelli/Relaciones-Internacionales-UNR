@@ -50,18 +50,77 @@ const materias = {
 
 const estadoMaterias = {}; // aprobado / habilitado / bloqueado
 
+// Distribución por año
+const anioMateria = {
+  "Teoría Política 1": 1,
+  "Historia de las Relaciones Internacionales Contemporáneas": 1,
+  "Ingles Nivel 1": 1,
+  "Teoría Económica": 1,
+  "Problemática de las Relaciones Internacionales": 1,
+  "Política y Derecho": 1,
+  "Teoría Sociológica 1": 1,
+
+  "Teoría Política 2": 2,
+  "Inglés Nivel 2": 2,
+  "Política Económica": 2,
+  "Relaciones Internacionales": 2,
+  "Epistemología": 2,
+  "Teoría Sociológica 2": 2,
+  "Historia Política Latinoamericana": 2,
+
+  "Teoría Política 3": 3,
+  "Historia Política Argentina": 3,
+  "Ingles Nivel 3": 3,
+  "Economía Internacional": 3,
+  "Integración y Cooperación Latinoamericana": 3,
+  "Metodología de la Investigación en las Ciencias Sociales": 3,
+  "Política Comparada": 3,
+
+  "Derecho Internacional Publico": 4,
+  "Ingles Nivel 4": 4,
+  "Frances Nivel 1": 4,
+  "Finanzas Internacionales": 4,
+  "Teoría de las Relaciones Internacionales": 4,
+  "Comercio Exterior": 4,
+  "Política Internacional": 4,
+  "Historia de las Relaciones Internacionales Latinoamericanas y Argentinas": 4,
+
+  "Política Internacional Argentina": 5,
+  "Francés Nivel 2": 5,
+  "Politica Internacional Latinoamericana": 5,
+  "Electiva 1": 5,
+  "Taller": 5,
+  "Derecho Consular y Diplomático": 5,
+  "Electiva 2": 5,
+  "Electiva 3": 5,
+};
+
 function crearGrilla() {
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
+  const contenedor = document.getElementById("contenedor-anios");
+  contenedor.innerHTML = "";
+
+  // Crear grilla por año
+  for (let i = 1; i <= 5; i++) {
+    const seccion = document.createElement("div");
+    seccion.className = "anio";
+    seccion.innerHTML = `<h2>${i}° Año</h2><div class="grid" id="grid-anio-${i}"></div>`;
+    contenedor.appendChild(seccion);
+  }
+
+  // Añadir materias a cada año
   Object.keys(materias).forEach(nombre => {
     const div = document.createElement("div");
     div.className = "materia bloqueada";
     div.textContent = nombre;
     div.id = nombre;
     div.onclick = () => toggleMateria(nombre);
-    grid.appendChild(div);
     estadoMaterias[nombre] = "bloqueada";
+
+    const anio = anioMateria[nombre];
+    const grid = document.getElementById(`grid-anio-${anio}`);
+    if (grid) grid.appendChild(div);
   });
+
   actualizarEstados();
 }
 
@@ -76,6 +135,12 @@ function actualizarEstados() {
 
     const div = document.getElementById(nombre);
     div.className = "materia " + estadoMaterias[nombre];
+
+    if (estadoMaterias[nombre] === "aprobada") {
+      div.style.textDecoration = "line-through";
+    } else {
+      div.style.textDecoration = "none";
+    }
   }
 }
 
